@@ -19,6 +19,7 @@ func main() {
 		}
 		switch day {
 		case 1:
+			day1()
 		case 2:
 		case 3:
 		case 4:
