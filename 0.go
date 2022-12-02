@@ -21,6 +21,7 @@ func main() {
 		case 1:
 			day1()
 		case 2:
+			day2()
 		case 3:
 		case 4:
 		case 5:
