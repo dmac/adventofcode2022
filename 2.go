@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
 const (
@@ -14,10 +13,10 @@ const (
 func day2() {
 	points1 := 0
 	points2 := 0
-	scanner := makeFileScanner("2.txt")
-	for scanner.Scan() {
+	lines := mustReadFileLines("2.txt")
+	for _, s := range lines {
 		var opp, me int
-		b := scanner.Bytes()
+		b := []byte(s)
 		switch b[0] {
 		case 'A':
 			opp = rock
@@ -71,9 +70,6 @@ func day2() {
 			points2 += 3
 		}
 
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
 	}
 	fmt.Println(points1)
 	fmt.Println(points2)

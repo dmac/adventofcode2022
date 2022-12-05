@@ -16,9 +16,9 @@ type assignment struct {
 
 func day4() {
 	var assns []*assignment
-	scanner := makeFileScanner("4.txt")
-	for scanner.Scan() {
-		pair0, pair1, _ := strings.Cut(scanner.Text(), ",")
+	lines := mustReadFileLines("4.txt")
+	for _, line := range lines {
+		pair0, pair1, _ := strings.Cut(line, ",")
 		lo0, hi0, _ := strings.Cut(pair0, "-")
 		lo1, hi1, _ := strings.Cut(pair1, "-")
 		assn := &assignment{
@@ -28,9 +28,6 @@ func day4() {
 			hi1: mustParseInt(hi1),
 		}
 		assns = append(assns, assn)
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
 	}
 	containCount := 0
 	overlapCount := 0

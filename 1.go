@@ -10,9 +10,8 @@ import (
 func day1() {
 	tot := 0
 	var tots []int
-	scanner := makeFileScanner("1.txt")
-	for scanner.Scan() {
-		s := scanner.Text()
+	lines := mustReadFileLines("1.txt")
+	for _, s := range lines {
 		if s == "" {
 			tots = append(tots, tot)
 			tot = 0
@@ -23,9 +22,6 @@ func day1() {
 			log.Fatal(err)
 		}
 		tot += n
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
 	}
 	tots = append(tots, tot)
 	sort.Slice(tots, func(i, j int) bool {
