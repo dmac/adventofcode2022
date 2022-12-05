@@ -2,28 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
 func day3() {
-	scanner := makeFileScanner("3.txt")
+	lines := mustReadFileLines("3.txt")
 	sum := 0
-	var lines [][]byte
-	for scanner.Scan() {
-		line := scanner.Bytes()
+	for _, line := range lines {
+		line := []byte(line)
 		common := commonItems(line[:len(line)/2], line[len(line)/2:])
 		sum += priority(common[0])
-		lines = append(lines, append([]byte{}, line...))
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
 	}
 	fmt.Println(sum)
 
 	sum = 0
 	for i := 0; i < len(lines)-2; i += 3 {
-		common := commonItems(lines[i], lines[i+1])
-		common = commonItems(common, lines[i+2])
+		common := commonItems([]byte(lines[i]), []byte(lines[i+1]))
+		common = commonItems(common, []byte(lines[i+2]))
 		sum += priority(common[0])
 	}
 	fmt.Println(sum)
