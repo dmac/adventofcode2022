@@ -39,6 +39,7 @@ func main() {
 		case 10:
 			day10()
 		case 11:
+			day11()
 		case 12:
 		case 13:
 		case 14:
@@ -72,4 +73,12 @@ func mustReadFileLines(path string) []string {
 		log.Fatal(err)
 	}
 	return lines
+}
+
+func mustParseInt(s string) int {
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
+	}
+	return n
 }

@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"strconv"
 	"strings"
 )
 
@@ -41,14 +39,6 @@ func day4() {
 	}
 	fmt.Println(containCount)
 	fmt.Println(overlapCount)
-}
-
-func mustParseInt(s string) int {
-	n, err := strconv.Atoi(s)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return n
 }
 
 func contains(lo0, hi0, lo1, hi1 int) bool {
