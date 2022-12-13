@@ -43,6 +43,7 @@ func main() {
 		case 12:
 			day12()
 		case 13:
+			day13()
 		case 14:
 		case 15:
 		case 16:
