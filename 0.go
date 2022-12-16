@@ -49,6 +49,7 @@ func main() {
 		case 15:
 			day15()
 		case 16:
+			day16()
 		case 17:
 		case 18:
 		case 19:
