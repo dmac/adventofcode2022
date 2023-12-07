@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 )
@@ -14,9 +13,15 @@ type valve struct {
 	tunnels []string
 }
 
+type valvePathfinder struct {
+	maxPressure int
+	maxPath     string
+	valves      map[string]*valve
+}
+
 func day16() {
 	valves := make(map[string]*valve)
-	lines := mustReadFileLines("16small.txt")
+	lines := mustReadFileLines("16.txt")
 	for _, l := range lines {
 		parts := strings.Split(l, " ")
 		_, ns, _ := strings.Cut(parts[4], "=")
@@ -30,56 +35,84 @@ func day16() {
 		valves[parts[1]] = v
 	}
 
-	permutations := makePermutations(valves, nil, "AA")
-	fmt.Println(len(permutations))
+	vp := &valvePathfinder{valves: valves}
+	vp.findMaxPressure([]string{"AA"})
+	fmt.Println(vp.maxPressure)
 
-	os.Exit(0)
+	// 	permutations := makePermutations(valves, nil, "AA")
+	// 	fmt.Println(len(permutations))
 
-	minutes := 0
-	flowing := 0
-	pressure := 0
-	curr := "AA"
+	// 	os.Exit(0)
+
+	// 	minutes := 0
+	// 	flowing := 0
+	// 	pressure := 0
+	// 	curr := "AA"
+	// outer:
+	// 	for {
+	// 		next := nextBestScore(valves, curr, minutes)
+	// 		if next == "" {
+	// 			break
+	// 		}
+	// 		path := findPath(valves, curr, next)
+	// 		fmt.Println(path)
+	// 		if len(path) == 0 {
+	// 			panic("0 length path")
+	// 		}
+	// 		for _, name := range path {
+	// 			curr = name
+	// 			minutes++
+	// 			pressure += flowing
+	// 			// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
+	// 			if minutes == 30 {
+	// 				break outer
+	// 			}
+	// 		}
+	// 		v := valves[next]
+	// 		minutes++
+	// 		pressure += flowing
+	// 		// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
+	// 		v.open = true
+	// 		flowing += v.flow
+	// 		if minutes == 30 {
+	// 			break outer
+	// 		}
+	// 	}
+	// 	for minutes < 30 {
+	// 		minutes++
+	// 		pressure += flowing
+	// 		// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
+	// 	}
+	// 	fmt.Println(pressure)
+	// 	var z uint64
+	// 	for i := 0; i < 1e12; i++ {
+	// 		z++
+	// 	}
+	// 	fmt.Println(z)
+}
+
+func (vp *valvePathfinder) findMaxPressure(path []string) {
+	var rem []string
 outer:
-	for {
-		next := nextBestScore(valves, curr, minutes)
-		if next == "" {
-			break
+	for name, v := range vp.valves {
+		if v.flow == 0 {
+			continue
 		}
-		path := findPath(valves, curr, next)
-		fmt.Println(path)
-		if len(path) == 0 {
-			panic("0 length path")
-		}
-		for _, name := range path {
-			curr = name
-			minutes++
-			pressure += flowing
-			// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
-			if minutes == 30 {
-				break outer
+		for _, p := range path {
+			if name == p {
+				continue outer
 			}
 		}
-		v := valves[next]
-		minutes++
-		pressure += flowing
-		// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
-		v.open = true
-		flowing += v.flow
-		if minutes == 30 {
-			break outer
-		}
+		rem = append(rem, name)
 	}
-	for minutes < 30 {
-		minutes++
-		pressure += flowing
-		// fmt.Printf("minute %d: pressure=%d\n", minutes, pressure)
+	sort.Strings(rem)
+	for _, name := range rem {
+		path := append(path, name)
+		vp.findMaxPressure(path)
 	}
-	fmt.Println(pressure)
-	var z uint64
-	for i := 0; i < 1e12; i++ {
-		z++
-	}
-	fmt.Println(z)
+	// if len(rem) == 0 {
+	// 	fmt.Println(path)
+	// }
 }
 
 func findPath(valves map[string]*valve, start, goal string) []string {
